@@ -101,7 +101,7 @@ class DSXParserTest {
         String exp = "If IsNotNull(svDelivaryDt) and Trim(svDelivaryDt)<>'' and IsValid('Date',svDelivaryDt,'%yyyy%mm%dd') Then 'Y|||' Else SetNull()";
         Expression expression = parser.parseExpression(exp);
         String sql = optimizer.optimize(expression).doGenSql();
-        Assertions.assertEquals("if(svDelivaryDt != null and trim(svDelivaryDt) <> '' and to_date(svDelivaryDt,'yyyyMMdd')!=null, 'Y|||', null)", sql);
+        Assertions.assertEquals("if(isnotnull(svDelivaryDt) and trim(svDelivaryDt) <> '' and isNotNull(to_date(svDelivaryDt,'yyyyMMdd')), 'Y|||', null)", sql);
     }
 
     @Test

@@ -30,6 +30,9 @@ public class StringToTimestampFunc extends DsxFunc {
     public static String dateFormatCast(String format) {
         return format.replace("%yyyy", "yyyy")
                 .replace("%mm", "MM")
-                .replace("%dd", "dd");
+                .replace("%dd", "dd")
+                .replace("%hh", "HH")
+                .replace("%nn", "mm")
+                .replace("%ss", "ss");
     }
 }

@@ -29,7 +29,7 @@ public class ErrorParseTest {
         String exp = "IsValid(\"date\",lnk_xfm2.DTE_MODL_YR:'-01-01')=1";
         Expression expression = parser.parseExpression(exp);
         String sql = optimizer.optimize(expression).doGenSql();
-        Assertions.assertEquals("to_date(lnk_xfm2.DTE_MODL_YR || '-01-01','yyyy-MM-dd')!=null = 1", sql);
+        Assertions.assertEquals("isNotNull(to_date(lnk_xfm2.DTE_MODL_YR || '-01-01','yyyy-MM-dd')) = 1", sql);
     }
 
     @Test

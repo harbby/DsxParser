@@ -1,2 +1,2 @@
-rootProject.name = "dsx_parser"
+rootProject.name = "dsx-parser"
 

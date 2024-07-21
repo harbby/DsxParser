@@ -105,7 +105,7 @@ publishing {
             groupId = "${project.group}"
 
             pom {
-                name.set("dsx_parser")
+                name.set("dsx-parser")
                 description.set("dsx parser")
                 url.set("https://github.com/harbby/DsxParser")
 
@@ -130,6 +130,26 @@ publishing {
                 }
             }
         }
+    }
+
+    repositories {
+        maven {
+            credentials {
+                username = project.findProperty("mavenUsername")?.toString()
+                password = project.findProperty("mavenPassword")?.toString()
+            }
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            val repository_url = if (project.version.toString().endsWith("-SNAPSHOT"))
+                "https://oss.sonatype.org/content/repositories/snapshots" else
+                "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            url = uri(repository_url)
+        }
+        mavenLocal()
+    }
+
+    signing {
+        isRequired = project.hasProperty("mavenUsername")
+        sign(publishing.publications.getByName("mavenJava"))
     }
 
     tasks.register("install") {
