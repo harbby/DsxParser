@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.harbby"
-version = "1.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

@@ -103,4 +103,29 @@ public class ErrorParseTest {
         String sql = optimizer.optimize(expression).doGenSql();
         Assertions.assertEquals("left('abc', len(from_src_Xtract.FilePath) - nLenRem - 5)", sql);
     }
+
+    @Test
+    void windows_path_test() {
+        String exp = "index('C:\\Program Files (x86)\\temp', '\\', 1) > 0";
+        Expression expression = parser.parseExpression(exp);
+        String sql = optimizer.optimize(expression).doGenSql();
+        Assertions.assertEquals("contains('C:\\\\Program Files (x86)\\\\temp', '\\\\')", sql);
+    }
+
+    @Test
+    void unicode_str_test() {
+        // 🦄
+        String exp = "'你' || '好\uD83E\uDD84'";
+        Expression expression = parser.parseExpression(exp);
+        String sql = optimizer.optimize(expression).doGenSql();
+        Assertions.assertEquals("'你好\uD83E\uDD84'", sql);
+    }
+
+    @Test
+    void str_test() {
+        String exp = "contains('a\nb', '\n')";
+        Expression expression = parser.parseExpression(exp);
+        String sql = optimizer.optimize(expression).doGenSql();
+        Assertions.assertEquals("contains('a\nb', '\n')", sql);
+    }
 }

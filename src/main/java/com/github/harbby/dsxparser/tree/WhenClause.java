@@ -64,6 +64,6 @@ public class WhenClause
 
     @Override
     public String toString() {
-        return String.format("when %s then %s", operand, result);
+        return String.format("when %s then %s", operand.doGenSql(), result.doGenSql());
     }
 }

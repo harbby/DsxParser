@@ -48,12 +48,28 @@ public class StringLiteral extends Literal {
 
     @Override
     public String toString() {
-        return formatStringLiteral(this.getValue());
+        return doGenSql();
     }
 
     @Override
     public String doGenSql() {
-        return formatStringLiteral(value);
+        return String.format("'%s'", escapeSQL(value));
+    }
+
+    static String escapeSQL(String str) {
+        if (str == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(str.length() * 2);
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (c) {
+                case '\\' -> sb.append("\\\\");
+                case '\'' -> sb.append("''");
+                default -> sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     private static boolean charMatches(char startInclusive, char endInclusive, String sequence) {
@@ -67,7 +83,6 @@ public class StringLiteral extends Literal {
     }
 
     static String formatStringLiteral(String s) {
-        s = s.replace("'", "''");
 //        if (CharMatcher.inRange((char) 0x20, (char) 0x7E).matchesAllOf(s)) {
 //            return "'" + s + "'";
 //        }
@@ -76,7 +91,7 @@ public class StringLiteral extends Literal {
         }
 
         StringBuilder builder = new StringBuilder();
-        builder.append("U&'");
+        builder.append("'");
         PrimitiveIterator.OfInt iterator = s.codePoints().iterator();
         while (iterator.hasNext()) {
             int codePoint = iterator.nextInt();
@@ -88,11 +103,13 @@ public class StringLiteral extends Literal {
                 }
                 builder.append(ch);
             } else if (codePoint <= 0xFFFF) {
-                builder.append('\\');
+                builder.append("\\u");
                 builder.append(String.format("%04X", codePoint));
             } else {
-                builder.append("\\+");
-                builder.append(String.format("%06X", codePoint));
+                builder.append("\\u");
+                builder.append(String.format("%04X", (int) Character.highSurrogate(codePoint)));
+                builder.append("\\u");
+                builder.append(String.format("%04X", (int) Character.lowSurrogate(codePoint)));
             }
         }
         builder.append("'");
