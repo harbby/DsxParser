@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ArithmeticBinaryAndLogicalBinaryTest {
-    private final DSXParser parser = DSXParserHelper.createParser();
+    private final DSXParser parser = DSXParserHelper.create();
 
     @Test
     void simpleArithmeticBinaryExpression1() {

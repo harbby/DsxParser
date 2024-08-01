@@ -17,22 +17,16 @@ public class StringToTimestampFunc extends DsxFunc {
     @Override
     public String doGenSql() {
         String column = arguments.get(0).doGenSql();
-        String format;
         if (arguments.size() == 1) {
-            format = "yyyy-MM-dd hh:mm:ss";
-        } else {
-            format = ((StringLiteral) arguments.get(1)).getValue();
-            format = dateFormatCast(format);
+            return String.format("cast(%s as timestamp)", column);
         }
+
+        String format = ((StringLiteral) arguments.get(1)).getValue();
+        format = dateFormatCast(format);
         return String.format("to_timestamp(%s,'%s')", column, format);
     }
 
     public static String dateFormatCast(String format) {
-        return format.replace("%yyyy", "yyyy")
-                .replace("%mm", "MM")
-                .replace("%dd", "dd")
-                .replace("%hh", "HH")
-                .replace("%nn", "mm")
-                .replace("%ss", "ss");
+        return format.replace("%yyyy", "yyyy").replace("%mm", "MM").replace("%dd", "dd").replace("%hh", "HH").replace("%nn", "mm").replace("%ss", "ss");
     }
 }

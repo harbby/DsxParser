@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class DSXParserTest {
-    private final DSXParser parser = DSXParserHelper.createParser();
+    private final DSXParser parser = DSXParserHelper.create();
     private final Optimizer optimizer = Optimizer.empty();
 
     @Test
@@ -77,7 +77,7 @@ class DSXParserTest {
         String exp = "If (IsNull(FIRSTNAME) OR Trim(NullToEmpty(FIRSTNAME))=''  or FIRSTNAME='N/A') Then 'N' Else 'Y'";
         Expression expression = parser.parseExpression(exp);
         String sql = optimizer.optimize(expression).doGenSql();
-        Assertions.assertEquals("if(isnull(FIRSTNAME) or trim(nvl(FIRSTNAME,'')) = '' or FIRSTNAME = 'N/A', 'N', 'Y')", sql);
+        Assertions.assertEquals("if(isNull(FIRSTNAME) or trim(nvl(FIRSTNAME,'')) = '' or FIRSTNAME = 'N/A', 'N', 'Y')", sql);
     }
 
     @Test
@@ -101,7 +101,7 @@ class DSXParserTest {
         String exp = "If IsNotNull(svDelivaryDt) and Trim(svDelivaryDt)<>'' and IsValid('Date',svDelivaryDt,'%yyyy%mm%dd') Then 'Y|||' Else SetNull()";
         Expression expression = parser.parseExpression(exp);
         String sql = optimizer.optimize(expression).doGenSql();
-        Assertions.assertEquals("if(isnotnull(svDelivaryDt) and trim(svDelivaryDt) <> '' and isNotNull(to_date(svDelivaryDt,'yyyyMMdd')), 'Y|||', null)", sql);
+        Assertions.assertEquals("if(isNotNull(svDelivaryDt) and trim(svDelivaryDt) <> '' and isNotNull(to_date(svDelivaryDt,'yyyyMMdd')), 'Y|||', null)", sql);
     }
 
     @Test

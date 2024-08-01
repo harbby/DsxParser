@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ErrorParseTest {
-    private final DSXParser parser = DSXParserHelper.createParser();
-    private final Optimizer optimizer = Optimizer.create();
+    private final DSXParser parser = DSXParserHelper.create();
+    private final Optimizer optimizer = DSXParserHelper.createOptimizer();
 
     @Test
     void error_parse1() {

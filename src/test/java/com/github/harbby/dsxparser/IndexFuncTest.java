@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class IndexFuncTest {
-    private final DSXParser parser = DSXParserHelper.createParser();
+    private final DSXParser parser = DSXParserHelper.create();
     private final Optimizer optimizer = Optimizer.empty();
 
     @Test

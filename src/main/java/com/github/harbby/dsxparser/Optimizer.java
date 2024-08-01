@@ -1,6 +1,8 @@
 package com.github.harbby.dsxparser;
 
-import com.github.harbby.dsxparser.rbo.*;
+import com.github.harbby.dsxparser.rbo.ArithmeticConstantFoldingRule;
+import com.github.harbby.dsxparser.rbo.ArithmeticUnaryRule;
+import com.github.harbby.dsxparser.rbo.LiteralConcatConstantFoldingRule;
 import com.github.harbby.dsxparser.tree.Expression;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,8 +21,6 @@ public class Optimizer {
 
     private static final List<Class<? extends RboRule<?>>> INTERNAL_RBO_RULES = Arrays.asList(
             ArithmeticUnaryRule.class,
-            DaysTimestampFromDateTimeRule.class,
-            IndexFuncWhenIndex1Than0Rule.class,
             ArithmeticConstantFoldingRule.class,
             LiteralConcatConstantFoldingRule.class);
 
@@ -67,15 +67,38 @@ public class Optimizer {
                 .orElse(childFirst);
     }
 
-    public static Optimizer create() {
-        return new Optimizer(INTERNAL_RBO_RULES);
-    }
-
-    public static Optimizer create(List<Class<? extends RboRule<?>>> ruleList) {
-        return new Optimizer(ruleList);
-    }
-
     public static Optimizer empty() {
         return EMPTY_OPTIMIZER;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final List<Class<? extends RboRule<?>>> rboRules = new ArrayList<>();
+        private boolean disableBuiltinRboRule = false;
+
+        public Builder add(Class<? extends RboRule<?>> ruleClass) {
+            this.rboRules.add(ruleClass);
+            return this;
+        }
+
+        public Builder addAll(Collection<Class<? extends RboRule<?>>> ruleClassList) {
+            this.rboRules.addAll(ruleClassList);
+            return this;
+        }
+
+        public Builder disableBuiltinRboRule() {
+            this.disableBuiltinRboRule = true;
+            return this;
+        }
+
+        public Optimizer build() {
+            if (!disableBuiltinRboRule) {
+                this.addAll(INTERNAL_RBO_RULES);
+            }
+            return new Optimizer(rboRules);
+        }
     }
 }

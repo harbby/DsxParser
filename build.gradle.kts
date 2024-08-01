@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.harbby"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.2-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -92,6 +92,8 @@ tasks.register<Jar>("javadocJar") {
     tasks.javadoc.orNull?.isFailOnError = false
 }
 //--- gradle clean build publish
+// export https_proxy=http://127.0.0.1:prot
+// export http_proxy=http://127.0.0.1:prot
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
