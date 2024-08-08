@@ -30,7 +30,7 @@ public class LiteralConcatConstantFoldingRule implements RboRule<ConcatExpressio
     }
 
     @Override
-    public Expression optimize(Optimizer optimizer, ConcatExpression expression) {
+    public Expression optimize(ConcatExpression expression) {
         StringBuilder builder = new StringBuilder();
         Queue<Expression> stack = new LinkedList<>();
         stack.add(expression);

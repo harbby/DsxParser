@@ -11,5 +11,5 @@ public interface RboRule<T extends Expression> {
 
     boolean isMatch(T expression);
 
-    Expression optimize(Optimizer optimizer, T expression);
+    Expression optimize(T expression);
 }

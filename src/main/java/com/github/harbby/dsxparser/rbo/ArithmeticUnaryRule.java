@@ -19,7 +19,7 @@ public class ArithmeticUnaryRule implements RboRule<ArithmeticUnaryExpression> {
     }
 
     @Override
-    public Expression optimize(Optimizer optimizer, ArithmeticUnaryExpression expression) {
+    public Expression optimize(ArithmeticUnaryExpression expression) {
         long value = ((LongLiteral) expression.getValue()).getValue();
         return new LongLiteral(-1 * value);
     }

@@ -10,24 +10,18 @@ import static java.util.Objects.requireNonNull;
 
 public class FunctionCall extends Expression {
     protected final QualifiedName name;
-    private final boolean ignoreNulls;
     protected final List<Expression> arguments;
 
     public FunctionCall(QualifiedName name, List<Expression> arguments) {
-        this(null, name, arguments, false);
+        this(null, name, arguments);
     }
 
     public FunctionCall(NodeLocation location, QualifiedName name, List<Expression> arguments) {
-        this(location, name, arguments, false);
-    }
-
-    private FunctionCall(NodeLocation location, QualifiedName name, List<Expression> arguments, boolean ignoreNulls) {
         super(location);
         requireNonNull(name, "name is null");
         requireNonNull(arguments, "arguments is null");
 
         this.name = name;
-        this.ignoreNulls = ignoreNulls;
         this.arguments = arguments;
     }
 
@@ -39,12 +33,12 @@ public class FunctionCall extends Expression {
         return name;
     }
 
-    public boolean isIgnoreNulls() {
-        return ignoreNulls;
-    }
-
     public List<Expression> getArguments() {
         return arguments;
+    }
+
+    public Expression getArgument(int index) {
+        return arguments.get(index);
     }
 
     @Override
@@ -62,13 +56,12 @@ public class FunctionCall extends Expression {
         }
         FunctionCall o = (FunctionCall) obj;
         return Objects.equals(name, o.name) &&
-                Objects.equals(ignoreNulls, o.ignoreNulls) &&
                 Objects.equals(arguments, o.arguments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, ignoreNulls, arguments);
+        return Objects.hash(name, arguments);
     }
 
     @Override

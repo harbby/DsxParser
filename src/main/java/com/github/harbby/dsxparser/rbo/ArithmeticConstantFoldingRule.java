@@ -20,7 +20,7 @@ public class ArithmeticConstantFoldingRule implements RboRule<ArithmeticBinaryEx
     }
 
     @Override
-    public Expression optimize(Optimizer optimizer, ArithmeticBinaryExpression expression) {
+    public Expression optimize(ArithmeticBinaryExpression expression) {
         long left = ((LongLiteral) expression.getLeft()).getValue();
         long right = ((LongLiteral) expression.getRight()).getValue();
         ArithmeticBinaryExpression.Operator operator = expression.getOperator();
