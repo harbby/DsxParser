@@ -182,7 +182,7 @@ public class AstBuilder extends SqlBaseBaseVisitor<Node> {
     @Override
     public Node visitSubstring2(SqlBaseParser.Substring2Context ctx) {
         return new SubStringExpression(getLocation(ctx),
-                visit(ctx.str, Expression.class),
+                visit(ctx.value, Expression.class),
                 visit(ctx.pos, Expression.class),
                 visit(ctx.len, Expression.class));
     }

@@ -57,6 +57,14 @@ public class ErrorParseTest {
     }
 
     @Test
+    void substr_parse4_2() {
+        String exp = "TRANSACTION_ID[1,2] || '-' || TRANSACTION_ID[3,2]";
+        Expression expression = parser.parseExpression(exp);
+        String sql = optimizer.optimize(expression).doGenSql();
+        Assertions.assertEquals("substring(TRANSACTION_ID,1,2) || '-' || substring(TRANSACTION_ID,3,2)", sql);
+    }
+
+    @Test
     void decimal_type_test() {
         String exp = "If Trim(Ln_Read_Src.RO_HDR_CP_STOT_AMT_DMS) <> ''  Then StringToDecimal(Ln_Read_Src.RO_HDR_CP_STOT_AMT_DMS) Else 0.00";
         Expression expression = parser.parseExpression(exp);
@@ -127,5 +135,13 @@ public class ErrorParseTest {
         Expression expression = parser.parseExpression(exp);
         String sql = optimizer.optimize(expression).doGenSql();
         Assertions.assertEquals("contains('a\nb', '\n')", sql);
+    }
+
+    @Test
+    void error_parse5() {
+        String exp = "TimestampToString(Extract.updated_at, \"%yyyy-%mm-%ddT%hh:%nn:%ss.3Z\")";
+        Expression expression = parser.parseExpression(exp);
+        String sql = optimizer.optimize(expression).doGenSql();
+        Assertions.assertEquals("timestamptostring(Extract.updated_at, '%yyyy-%mm-%ddT%hh:%nn:%ss.3Z')", sql);
     }
 }

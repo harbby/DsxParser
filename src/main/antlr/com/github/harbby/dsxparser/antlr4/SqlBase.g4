@@ -47,7 +47,6 @@ valueExpression
     | left=valueExpression operator=(ASTERISK | SLASH | PERCENT) right=valueExpression  #arithmeticBinary
     | left=valueExpression operator=(PLUS | MINUS) right=valueExpression                #arithmeticBinary
     | left=valueExpression CONCAT right=valueExpression                                 #concatenation
-    | str=valueExpression '[' pos=valueExpression ',' len=valueExpression ']'           #substring2
     ;
 
 setQuantifier
@@ -70,15 +69,16 @@ primaryExpression
     | qualifiedName '(' (setQuantifier? expression (',' expression)*)? ')'                #functionCall
     | ARRAY '[' (expression (',' expression)*)? ']'                                       #arrayConstructor
     | value=primaryExpression '[' index=valueExpression ']'                               #subscript
+    | value=primaryExpression '[' pos=valueExpression ',' len=valueExpression ']'         #substring2
     | identifier                                                                          #columnReference
     | base=primaryExpression '.' fieldName=identifier                                     #dereference
     | name=LOCALTIME ('(' precision=INTEGER_VALUE ')')?                                   #specialDateTimeFunction
     | name=LOCALTIMESTAMP ('(' precision=INTEGER_VALUE ')')?                              #specialDateTimeFunction
     | name=CURRENT_USER                                                                   #currentUser
     | name=CURRENT_PATH                                                                   #currentPath
-    | SUBSTRING '(' valueExpression FROM valueExpression (FOR valueExpression)? ')'       #substring
+//    | SUBSTRING '(' valueExpression FROM valueExpression (FOR valueExpression)? ')'       #substring
     | NORMALIZE '(' valueExpression (',' normalForm)? ')'                                 #normalize
-    | EXTRACT '(' identifier FROM valueExpression ')'                                     #extract
+//    | EXTRACT '(' identifier FROM valueExpression ')'                                     #extract
     | '(' expression ')'                                                                  #parenthesizedExpression
     ;
 
@@ -234,7 +234,7 @@ EXCLUDING: 'EXCLUDING';
 EXECUTE: 'EXECUTE';
 EXISTS: 'EXISTS';
 EXPLAIN: 'EXPLAIN';
-EXTRACT: 'EXTRACT';
+// EXTRACT: 'EXTRACT';
 FALSE: 'FALSE';
 FILTER: 'FILTER';
 FIRST: 'FIRST';
