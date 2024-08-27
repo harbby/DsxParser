@@ -101,6 +101,6 @@ public class DereferenceExpression
 
     @Override
     public Expression visit(Optimizer optimizer) {
-        return new DereferenceExpression(optimizer.optimize(base), field);
+        return this;
     }
 }

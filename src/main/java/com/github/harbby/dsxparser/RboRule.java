@@ -11,12 +11,5 @@ public interface RboRule<T extends Expression> {
 
     boolean isMatch(T expression);
 
-    default Expression optimize(T expression) {
-        return expression;
-    }
-
-    @Deprecated
-    default Expression optimize(Optimizer optimizer, T expression) {
-        return expression;
-    }
+    Expression optimize(T expression);
 }

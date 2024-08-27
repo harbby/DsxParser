@@ -63,8 +63,7 @@ public class Optimizer {
     public Expression optimize(Expression e) {
         Expression childFirst = e.visit(this);
         return this.match(childFirst)
-                //.map(r -> r.optimize(childFirst))
-                .map(r -> r.optimize(this, r.optimize(childFirst)))
+                .map(r -> r.optimize(childFirst))
                 .orElse(childFirst);
     }
 
