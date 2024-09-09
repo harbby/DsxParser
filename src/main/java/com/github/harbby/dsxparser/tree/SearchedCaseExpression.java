@@ -60,7 +60,7 @@ public class SearchedCaseExpression extends Expression {
 
     @Override
     public Expression visit(Optimizer optimizer) {
-        return new SearchedCaseExpression(whenClauses.stream().map(x -> x.visit(optimizer)).toList(), optimizer.optimize(defaultValue));
+        return new SearchedCaseExpression(whenClauses.stream().map(x -> (WhenClause) optimizer.optimize(x)).toList(), optimizer.optimize(defaultValue));
     }
 
     @Override
