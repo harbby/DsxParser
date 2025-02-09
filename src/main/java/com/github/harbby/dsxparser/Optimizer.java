@@ -35,6 +35,23 @@ public class Optimizer {
         ruleMap.computeIfAbsent(rboRule.bind(), k -> new HashSet<>()).add(rboRule);
     }
 
+    public void registerRBO(RboRule<?> rboRule) {
+        ruleMap.computeIfAbsent(rboRule.bind(), k -> new HashSet<>()).add(rboRule);
+    }
+
+    public Optimizer with(RboRule<?> rboRule) {
+        Optimizer child = this;
+        Optimizer wrap = new Optimizer(Collections.emptyList()) {
+            @Override
+            public Expression optimize(Expression e) {
+                Expression expression = child.optimize(e);
+                return super.optimize(expression);
+            }
+        };
+        wrap.registerRBO(rboRule);
+        return wrap;
+    }
+
     public <T extends Expression> Optional<RboRule<T>> match(T exp) {
         Set<? extends RboRule<T>> rules = lookupRule(exp);
         for (RboRule<T> rboRule : rules) {

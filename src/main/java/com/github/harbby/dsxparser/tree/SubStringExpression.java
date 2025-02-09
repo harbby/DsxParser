@@ -30,6 +30,10 @@ public class SubStringExpression extends Expression {
         return len;
     }
 
+    public Expression getBase() {
+        return base;
+    }
+
     @Override
     public String doGenSql() {
         return String.format("substring(%s,%s,%s)", base.doGenSql(), pos.doGenSql(), len.doGenSql());
@@ -37,12 +41,12 @@ public class SubStringExpression extends Expression {
 
     @Override
     public List<? extends Expression> getChildren() {
-        return List.of(pos, len);
+        return List.of(base, pos, len);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pos, len);
+        return Objects.hash(base, pos, len);
     }
 
     @Override
@@ -55,7 +59,8 @@ public class SubStringExpression extends Expression {
         }
 
         SubStringExpression that = (SubStringExpression) o;
-        return Objects.equals(pos, that.pos) &&
+        return Objects.equals(base, that.base) &&
+                Objects.equals(pos, that.pos) &&
                 Objects.equals(len, that.len);
     }
 
