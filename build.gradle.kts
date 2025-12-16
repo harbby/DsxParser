@@ -25,6 +25,7 @@ object versions {
     val junit = "5.13.4"
     val antlr4 = "4.13.2"
     val slf4j = "2.0.17"
+    val log4j2 = "2.25.2"
 }
 
 dependencies {
@@ -35,7 +36,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:${versions.junit}"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.slf4j:slf4j-log4j12:${versions.slf4j}")
+    // testImplementation("org.slf4j:slf4j-log4j12:${versions.slf4j}") //log4j1
+    testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:${versions.log4j2}")
 }
 
 tasks.test {
